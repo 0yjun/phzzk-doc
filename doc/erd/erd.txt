@@ -11,21 +11,26 @@ Table follow {
   followed_user_id integer                    // 팔로우 당하는 사용자 ID
 }
 
-Table Block { 
+Table block { 
   id integer [primary key]                   // 차단 관계의 고유 ID
   blocker_user_id integer                     // 차단한 사용자 ID
   blocked_user_id integer                     // 차단된 사용자 ID
+  type enum('user', 'admin')                 // 차단 유형
+                                              // 'user': 일반 유저가 차단한 경우
+                                              // 'admin': 관리자가 차단한 경우
 }
 
 Table stream { 
   id integer [primary key]                   // 방송의 고유 ID
   user_id integer                             // 방송을 시작한 사용자 ID
+  current_viewers integer                     // 현재 시청자 수
+  cumulative_viewers integer                  // 누적 시청자 수
 }
 
 Table video {
-    id uuid [primary key]                     // 비디오의 고유 ID
-    stream_id integer                         // 관련 스트림 ID
-    file_path varchar                         // 비디오 파일의 저장 경로
+  id uuid [primary key]                       // 비디오의 고유 ID
+  stream_id integer                           // 관련 스트림 ID
+  file_path varchar                           // 비디오 파일의 저장 경로
 }
 
 Table chat { 
@@ -42,46 +47,47 @@ Table manager {
   manager_id integer                          // 매니저의 사용자 ID
 }
 
-Table ban { 
-  id integer [primary key]                   // 활동 제한의 고유 ID
-  user_id integer                             // 활동 제한을 받은 사용자 ID
-  banned_user_id integer                      // 제한을 적용한 사용자 ID
-  start_date timestamp                        // 활동 제한 시작 시간
-  end_date timestamp                          // 활동 제한 종료 시간
-  // 활동 제한: 채팅, 도네이션 등 금지
+Table activity_ban { 
+  id integer [primary key]                   // 활동 정지의 고유 ID
+  user_id integer                             // 활동 정지를 받은 사용자 ID
+  banned_user_id integer                      // 제한을 적용한 사용자 ID (관리자 또는 일반 유저)
+  start_date timestamp                        // 활동 정지 시작 시간
+  end_date timestamp                          // 활동 정지 종료 시간
+  ban_count integer                           // 활동 정지 횟수
 }
 
 Table alarm {
-    id integer [primary key]                  // 알람의 고유 ID
-    sender_id integer                          // 알람을 보낸 사용자 ID (송신자)
-    user_id integer                            // 알람을 받을 사용자 ID
-    stream_id integer                          // 관련 스트림 ID
-    message varchar                            // 알람 메시지
-    created_at timestamp                       // 알람 생성 시간
-    is_read boolean                            // 알람 확인 여부 (기본값: false)
-    type varchar                               // 알람 유형 (예: "방송 시작", "방송 종료" 등)
+  id integer [primary key]                   // 알람의 고유 ID
+  sender_id integer                           // 알람을 보낸 사용자 ID (송신자)
+  user_id integer                             // 알람을 받을 사용자 ID
+  stream_id integer                           // 관련 스트림 ID
+  message varchar                             // 알람 메시지
+  created_at timestamp                        // 알람 생성 시간
+  is_read boolean                             // 알람 확인 여부 (기본값: false)
+  type varchar                                // 알람 유형 (예: "방송 시작", "방송 종료" 등)
 }
+
 Table view_history {
-    id integer [primary key]                  // 시청 기록의 고유 ID
-    user_id integer                            // 시청자 ID
-    video_id uuid                              // 관련 비디오 ID
-    last_viewed timestamp                      // 마지막 시청 시간
+  id integer [primary key]                   // 시청 기록의 고유 ID
+  user_id integer                             // 시청자 ID
+  video_id uuid                               // 관련 비디오 ID
+  last_viewed timestamp                       // 마지막 시청 시간
 }
 
 Ref: "user"."id" < "follow"."following_user_id"
 Ref: "user"."id" < "follow"."followed_user_id"
-Ref: "user"."id" < "Block"."blocker_user_id"
-Ref: "user"."id" < "Block"."blocked_user_id"
+Ref: "user"."id" < "block"."blocker_user_id"
+Ref: "user"."id" < "block"."blocked_user_id"
 Ref: "user"."id" < "stream"."user_id"
 Ref: "stream"."id" < "video"."stream_id"
 Ref: "user"."id" < "chat"."user_id"
 Ref: "stream"."id" < "chat"."stream_id"
 Ref: "user"."id" < "manager"."streamer_id"
 Ref: "user"."id" < "manager"."manager_id"
-Ref: "user"."id" < "ban"."user_id"
-Ref: "user"."id" < "ban"."banned_user_id"
+Ref: "user"."id" < "activity_ban"."user_id"
+Ref: "user"."id" < "activity_ban"."banned_user_id"
 Ref: "user"."id" < "alarm"."user_id"        // 알람을 받을 사용자
 Ref: "user"."id" < "alarm"."sender_id"      // 알람을 보낸 송신자
 Ref: "stream"."id" < "alarm"."stream_id"    // 알람과 관련된 방송
-Ref: "user"."id" < "view_history"."user_id"       // 시청자와 시청 기록의 관계
-Ref: "video"."id" < "view_history"."video_id"     // 비디오와 시청 기록의 관계
+Ref: "user"."id" < "view_history"."user_id" // 시청자와 시청 기록의 관계
+Ref: "video"."id" < "view_history"."video_id" // 비디오와 시청 기록의 관계

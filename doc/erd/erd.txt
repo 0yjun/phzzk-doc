@@ -7,7 +7,7 @@ Table user {
 
 Table follow { 
   id integer [primary key]                   // 팔로우 관계의 고유 ID
-  following_user_id integer                   // 팔로우 하는 사용자 ID
+  following_user_id integer                   // 팔로우하는 사용자 ID
   followed_user_id integer                    // 팔로우 당하는 사용자 ID
 }
 
@@ -62,18 +62,18 @@ Table alarm {
     type varchar                               // 알람 유형 (예: "방송 시작", "방송 종료" 등)
 }
 
-Ref: "user"."id" < "follow"."following_user_id"
-Ref: "user"."id" < "follow"."followed_user_id"
-Ref: "user"."id" < "Block"."blocker_user_id"
-Ref: "user"."id" < "Block"."blocked_user_id"
-Ref: "user"."id" < "stream"."user_id"
-Ref: "stream"."id" < "video"."stream_id"
-Ref: "user"."id" < "chat"."user_id"
-Ref: "stream"."id" < "chat"."stream_id"
-Ref: "user"."id" < "manager"."streamer_id"
-Ref: "user"."id" < "manager"."manager_id"
-Ref: "user"."id" < "ban"."user_id"
-Ref: "user"."id" < "ban"."banned_user_id"
-Ref: "user"."id" < "alarm"."user_id"        // 알람을 받을 사용자
-Ref: "user"."id" < "alarm"."sender_id"      // 알람을 보낸 송신자
-Ref: "stream"."id" < "alarm"."stream_id"    // 알람과 관련된 방송
+Ref: "user"."id" < "follow"."following_user_id"    // 팔로우하는 사용자
+Ref: "user"."id" < "follow"."followed_user_id"     // 팔로우 당하는 사용자
+Ref: "user"."id" < "Block"."blocker_user_id"       // 차단한 사용자
+Ref: "user"."id" < "Block"."blocked_user_id"       // 차단된 사용자
+Ref: "user"."id" < "stream"."user_id"              // 방송을 시작한 사용자
+Ref: "stream"."id" < "video"."stream_id"           // 관련 스트림 ID
+Ref: "user"."id" < "chat"."user_id"                // 채팅을 보낸 사용자
+Ref: "stream"."id" < "chat"."stream_id"            // 관련 스트림 ID
+Ref: "user"."id" < "manager"."streamer_id"         // 매니저가 관리하는 스트리머
+Ref: "user"."id" < "manager"."manager_id"          // 매니저의 사용자 ID
+Ref: "user"."id" < "ban"."user_id"                  // 활동 제한을 받은 사용자
+Ref: "user"."id" < "ban"."banned_user_id"          // 제한을 적용한 사용자
+Ref: "user"."id" < "alarm"."user_id"                // 알람을 받을 사용자
+Ref: "user"."id" < "alarm"."sender_id"              // 알람을 보낸 송신자
+Ref: "stream"."id" < "alarm"."stream_id"            // 알람과 관련된 방송

@@ -1,0 +1,21 @@
+WEB[관리자화면/사용자화면] -> WAS[마이크로서비스] -> DB
+
+
+graph TD
+    A[Client]
+    B[Web Server]
+    C[Application Server]
+    D[Database]
+
+    subgraph Web
+        direction TB
+        E[일반 사용자 페이지]
+        F[관리자 페이지]
+    end
+
+    A --> B
+    B --> E
+    B --> F
+    E --> C
+    F --> C
+    C --> D

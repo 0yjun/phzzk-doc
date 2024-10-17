@@ -1,7 +1,9 @@
 
 ### 에디터
-https://mermaid.live/edit
-
+* https://mermaid.live/edit
+  다이어그램 시각화
+* dbdiagram.io:
+  erd 시각화
 ### 참고자료
 
 ##### 스트리밍 

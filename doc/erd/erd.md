@@ -35,6 +35,8 @@
 | `type`          | enum    | 차단 유형 ('user', 'admin')    |
 
 ---
+# 비디오/ 스트림
+---
 
 ## Table: `stream`
 
@@ -174,7 +176,8 @@
 - `report.id` → `report_attachment.report_id`
 
 ---
-
+# 마이크로서비스, 임계값 관리
+---
 ## Table: `threshold`
 
 | Column Name     | Type    | Description                     |

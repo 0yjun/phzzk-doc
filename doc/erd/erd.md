@@ -217,3 +217,20 @@
 **References**:  
 - `threshold.id` → `threshold_service_usage.threshold_id`  
 - `service.id` → `threshold_service_usage.service_id`
+
+---
+# 이벤트 소싱
+---
+### Table: event_sourcing
+---
+| Column         | Type       | Description                            |
+|----------------|------------|----------------------------------------|
+| id             | integer    | 이벤트 고유 ID (Primary Key)           |
+| aggregate_id   | integer    | 이벤트가 발생한 집합체(예: 서비스, 사용자 등)의 ID |
+| aggregate_type | varchar    | 집합체의 종류 (예: 서비스명, 사용자명 등) |
+| event_type     | varchar    | 이벤트의 종류 (예: CREATE, UPDATE, DELETE 등) |
+| event_data     | text       | 이벤트에 대한 상세 정보 (변경된 데이터 등) |
+| created_at     | timestamp  | 이벤트 발생 시간                      |
+| version        | integer    | 이벤트 버전 (이벤트 소싱에서 버전 관리 시 사용) |
+| metadata       | json       | 추가적인 메타데이터 (예: 요청자, 요청 시간 등) |
+| event_status   | varchar    | 이벤트 상태 (예: PENDING, PROCESSED 등) |

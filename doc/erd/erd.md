@@ -11,6 +11,9 @@ Table follow {
   followed_user_id integer                    // 팔로우 당하는 사용자 ID
 }
 
+Ref: "user"."id" < "follow"."following_user_id"
+Ref: "user"."id" < "follow"."followed_user_id"
+
 Table block { 
   id integer [primary key]                   // 차단 관계의 고유 ID
   blocker_user_id integer                     // 차단한 사용자 ID
@@ -20,6 +23,7 @@ Table block {
                                               // 'admin': 관리자가 차단한 경우
 }
 
+## 스트림/비디오
 Table stream { 
   id integer [primary key]                   // 방송의 고유 ID
   user_id integer                             // 방송을 시작한 사용자 ID
@@ -33,6 +37,18 @@ Table video {
   file_path varchar                           // 비디오 파일의 저장 경로
 }
 
+Table view_history {
+  id integer [primary key]                   // 시청 기록의 고유 ID
+  user_id integer                             // 시청자 ID
+  video_id uuid                               // 관련 비디오 ID
+  last_viewed timestamp                       // 마지막 시청 시간
+}
+Ref: "user"."id" < "stream"."user_id"
+Ref: "stream"."id" < "video"."stream_id"
+Ref: "user"."id" < "view_history"."user_id" // 시청자와 시청 기록의 관계
+Ref: "video"."id" < "view_history"."video_id" // 비디오와 시청 기록의 관계
+
+
 Table chat { 
   id integer [primary key]                   // 채팅 메시지의 고유 ID
   stream_id integer                           // 관련 스트림 ID
@@ -40,6 +56,7 @@ Table chat {
   message text                               // 채팅 메시지 내용
   timestamp timestamp                        // 메시지 전송 시간
 }
+___
 
 Table manager { 
   id integer [primary key]                   // 매니저 관계의 고유 ID
@@ -67,12 +84,7 @@ Table alarm {
   type varchar                                // 알람 유형 (예: "방송 시작", "방송 종료" 등)
 }
 
-Table view_history {
-  id integer [primary key]                   // 시청 기록의 고유 ID
-  user_id integer                             // 시청자 ID
-  video_id uuid                               // 관련 비디오 ID
-  last_viewed timestamp                       // 마지막 시청 시간
-}
+
 Table report {
     id integer [primary key]            // 신고의 고유 ID
     reporter_id integer                 // 신고한 시청자의 사용자 ID
@@ -88,12 +100,9 @@ Table report_attachment {
     file_type varchar                   // 첨부파일의 타입 (예: "video", "image")
 }
 
-Ref: "user"."id" < "follow"."following_user_id"
-Ref: "user"."id" < "follow"."followed_user_id"
+
 Ref: "user"."id" < "block"."blocker_user_id"
 Ref: "user"."id" < "block"."blocked_user_id"
-Ref: "user"."id" < "stream"."user_id"
-Ref: "stream"."id" < "video"."stream_id"
 Ref: "user"."id" < "chat"."user_id"
 Ref: "stream"."id" < "chat"."stream_id"
 Ref: "user"."id" < "manager"."streamer_id"
@@ -103,8 +112,37 @@ Ref: "user"."id" < "activity_ban"."banned_user_id"
 Ref: "user"."id" < "alarm"."user_id"        // 알람을 받을 사용자
 Ref: "user"."id" < "alarm"."sender_id"      // 알람을 보낸 송신자
 Ref: "stream"."id" < "alarm"."stream_id"    // 알람과 관련된 방송
-Ref: "user"."id" < "view_history"."user_id" // 시청자와 시청 기록의 관계
-Ref: "video"."id" < "view_history"."video_id" // 비디오와 시청 기록의 관계
+
 Ref: "user"."id" < "report"."reporter_id"
 Ref: "user"."id" < "report"."streamer_id"
 Ref: "report"."id" < "report_attachment"."report_id"
+
+
+## 마이크로서비스, 임계값 관리
+Table threshold { 
+  id integer [primary key]                   // 임계값 고유 ID
+  name varchar                                // 임계값의 이름 (예: RETRY_COUNT, MAX_RETRY_LIMIT 등)
+  value varchar                               // 임계값의 설정 값 (예: 5, 100, etc.)
+  status varchar                              // 임계값의 상태 (사용 중, 사용 안 함 등)
+  created_at timestamp                        // 임계값 생성 시간
+  updated_at timestamp                        // 임계값 마지막 수정 시간
+}
+
+Table service { 
+  id integer [primary key]                   // 서비스 고유 ID
+  name varchar                                // 서비스 이름 (예: transcoding, packaging 등)
+  description text                            // 서비스 설명
+  created_at timestamp                        // 서비스 생성 시간
+  updated_at timestamp                        // 서비스 마지막 수정 시간
+}
+
+Table threshold_service_usage { 
+  id integer [primary key]                   // 관계 고유 ID
+  threshold_id integer                        // 임계값 ID (threshold 테이블과 연관)
+  service_id integer                          // 서비스 ID (service 테이블과 연관)
+  in_use boolean                              // 임계값이 서비스에서 사용 중인지 여부 (true/false)
+  created_at timestamp                        // 임계값-서비스 관계 생성 시간
+  updated_at timestamp                        // 임계값-서비스 관계 마지막 수정 시간
+}
+Ref: "threshold"."id" < "threshold_service_usage"."threshold_id"
+Ref: "service"."id" < "threshold_service_usage"."service_id"

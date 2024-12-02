@@ -7,8 +7,9 @@
 ### 참고자료
 
 ##### 스트리밍 
-https://nooree.com/105
-https://issuebombom.tistory.com/107
+* https://nooree.com/105
+
+* https://issuebombom.tistory.com/107
 
 ##### 트위치
 https://blog.twitch.tv/en/2015/12/18/twitch-engineering-an-introduction-and-overview-a23917b71a25/

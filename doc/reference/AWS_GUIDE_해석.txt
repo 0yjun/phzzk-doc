@@ -1,0 +1,97 @@
+1. 목표 설정 및 요구 사항 정의:
+
+어떤 종류의 콘텐츠를 스트리밍 할 것인가? (라이브 방송, VOD, 교육 콘텐츠 등)
+
+타겟 시청자는 누구인가? (연령, 지역, 관심사 등)
+
+예상 시청 규모는 어느 정도인가? (동시 접속자 수, 트래픽 양 등)
+
+수익 모델은 무엇인가? (광고, 구독, 유료 콘텐츠 등)
+
+어떤 기능이 필요한가? (검색, 추천, 댓글, 인터랙티브 기능 등)
+
+콘텐츠 보호 수준은 어느 정도인가? (DRM, 워터마킹 등)
+
+2. 스트리밍 미디어 레이어 구성:
+
+Ingest (수집):
+
+라이브 콘텐츠: 카메라, 인코더 (AWS Elemental Live, AWS Elemental Link), 전송 서비스 (AWS Elemental MediaConnect, AWS Direct Connect)
+
+파일 기반 콘텐츠: Amazon S3, Amazon S3 Transfer Acceleration, AWS Snow Family
+
+Processing (처리):
+
+트랜스코딩 및 패키징: AWS Elemental MediaLive, AWS Elemental MediaConvert
+
+워크플로우 관리: AWS Step Functions, AWS Lambda, Amazon SQS
+
+Origin (원천):
+
+간단한 원천: Amazon S3
+
+미디어 최적화 원천: AWS Elemental MediaStore
+
+Just-In-Time 패키징: AWS Elemental MediaPackage
+
+광고 삽입: AWS Elemental MediaTailor
+
+Delivery (전달):
+
+CDN: Amazon CloudFront
+
+Origin Shield: Amazon CloudFront Origin Shield
+
+에지 컴퓨팅: AWS Lambda@Edge, Amazon CloudFront Functions
+
+Client (클라이언트):
+
+웹, 모바일, 스마트 TV, 연결된 기기용 플레이어 개발: 자체 개발 또는 Amazon Interactive Video Service(IVS), AWS Amplify 사용
+
+Monitoring (모니터링):
+
+인프라 모니터링: Amazon CloudWatch
+
+시청자 분석: Amazon Kinesis Data Streams, 데이터 웨어하우스 (Amazon Redshift, Amazon S3)
+
+3. 애플리케이션 레이어 구성:
+
+가입자 관리: Amazon Cognito, URL 토큰화, 콘텐츠 암호화
+
+콘텐츠 관리: Amazon DynamoDB, Amazon Relational Database Service
+
+분석: Amazon Kinesis Data Streams, Amazon Redshift, Amazon S3
+
+인터랙티브 기능: Amazon IVS, AWS Elemental Live (타임드 메타데이터)
+
+4. 설계 원칙 적용:
+
+Glass-to-Glass 관점 유지: 콘텐츠 제작부터 시청자에게 전달까지 모든 단계를 고려.
+
+시청자 이해: 시청자의 기기, 네트워크 환경, 시청 습관을 분석하여 최적화.
+
+콘텐츠 가치 파악: 콘텐츠의 가치를 기반으로 비용, 신뢰성, 성능, 보안 수준 결정.
+
+장애 대비: 각 구성 요소 및 네트워크 연결에 대한 장애 대비 및 복구 계획 수립.
+
+5. 구현 및 테스트:
+
+AWS 서비스를 사용하여 스트리밍 미디어 및 애플리케이션 레이어를 구축.
+
+각 구성 요소별 성능 및 안정성을 테스트.
+
+시청자 경험 (재생 품질, 로딩 시간 등)을 테스트.
+
+사용자 피드백을 바탕으로 지속적인 개선.
+
+추가 고려 사항:
+
+보안: 콘텐츠 암호화, 접근 제어, DDoS 공격 방어.
+
+확장성: 트래픽 증가에 따른 시스템 확장 능력.
+
+비용 최적화: 불필요한 리소스 소비를 줄이고 효율적인 아키텍처 설계.
+
+지속 가능성: 환경 친화적인 서비스 선택 및 운영.
+
+

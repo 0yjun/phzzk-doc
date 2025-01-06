@@ -1,0 +1,13 @@
+"serviceId":"game",
+"channelId":"N1abV_",
+"messageTime":1736169403403,
+"userId":"ef13f28cc590766a4641c27fec79530f",
+"profile":"{\"userIdHash\":\"ef13f28cc590766a4641c27fec79530f\",\"nickname\":\"바카맛\",\"profileImageUrl\":\"\",\"userRoleCode\":\"common_user\",\"badge\":null,\"title\":null,\"verifiedMark\":false,\"activityBadges\":[],\"streamingProperty\":{\"nicknameColor\":{\"colorCode\":\"CC000\"},\"activatedAchievementBadgeIds\":[]},\"viewerBadges\":[]}",
+"content":"만잘알",
+"extras":"{\"chatType\":\"STREAMING\",\"osType\":\"PC\",\"extraToken\":\"wfjSIpH3JB10DDK7JcOECgM1gOG50fipfSfYtF+i6k9tAnG5GgQDwn6p9NDalcjcfQYFxVIsvyd7+clYUJ1Q3g==\",\"streamingChannelId\":\"a7e175625fdea5a7d98428302b7aa57f\",\"emojis\":{}}",
+"memberCount":14168,
+"messageTypeCode":1,
+"messageStatusType":"NORMAL",
+"createTime":1736169403403,
+"updateTime":1736169403403,
+"msgTid":null
